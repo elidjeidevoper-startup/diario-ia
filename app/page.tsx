@@ -6,6 +6,13 @@ import { useRouter } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
 export default function Diario() {
+
+  // ADICIONE ESSAS DUAS LINHAS AQUI NO INÍCIO:
+  console.log("🔍 TESTE VERCEL - URL do Supabase:", process.env.NEXT_PUBLIC_SUPABASE_URL);
+  console.log("🔍 TESTE VERCEL - Chave do Supabase:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "Preenchida ✅" : "Vazia ❌");
+
+  // ... resto do seu código (useState, useEffect, etc)
+}
   const [content, setContent] = useState('');
   const [entries, setEntries] = useState<any[]>([]);
   const [aiReply, setAiReply] = useState('');
