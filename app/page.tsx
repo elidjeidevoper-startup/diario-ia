@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useRouter } from 'next/navigation';
 
+export const dynamic = 'force-dynamic';
+
 export default function Diario() {
   const [content, setContent] = useState('');
   const [entries, setEntries] = useState<any[]>([]);
