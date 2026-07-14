@@ -6,17 +6,12 @@ import { useRouter } from 'next/navigation';
 export const dynamic = 'force-dynamic';
 
 export default function Diario() {
-
-  // ADICIONE ESSAS DUAS LINHAS AQUI NO INÍCIO:
-  console.log("🔍 TESTE VERCEL - URL do Supabase:", process.env.NEXT_PUBLIC_SUPABASE_URL);
-  console.log("🔍 TESTE VERCEL - Chave do Supabase:", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ? "Preenchida ✅" : "Vazia ❌");
-
-  // ... resto do seu código (useState, useEffect, etc)
-}
   const [content, setContent] = useState('');
   const [entries, setEntries] = useState<any[]>([]);
   const [aiReply, setAiReply] = useState('');
   const router = useRouter();
+ 
+
 
   // Função para buscar as entradas no Supabase
   const fetchEntries = async () => {
@@ -86,8 +81,8 @@ export default function Diario() {
   } else {
     // Remove da tela apenas se o Supabase confirmou a exclusão
     setEntries(entries.filter((entry) => entry.id !== id));
-  }
-};
+  };
+
 
   return (
     <main className="min-h-screen bg-[#FAFAFA] p-6 md:p-12">
@@ -149,4 +144,4 @@ export default function Diario() {
       </div>
     </main>
   );
-}
+}}
