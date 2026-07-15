@@ -37,14 +37,37 @@ export default function Diario() {
   };
 
   const handleSave = async () => {
-    if (!content.trim()) return; // Não salva se estiver vazio
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
 
-    // 1. Lógica de salvar no Supabase...
-    // 2. Lógica de chamar a rota da IA (ex: fetch('/api/chat'))...
-    // 3. Atualizar o estado da IA (ex: setAiReply(respostaDaIA))...
+    // 1. Salva no banco primeiro
+    const { error } = await supabase.from('entries').insert([{ content, user_id: user.id }]);
+    
+    if (error) {
+      alert("Erro ao salvar no banco: " + error.message);
+      return;
+    }
 
-    setContent(''); // Limpa o campo de texto
-    fetchEntries(); // Atualiza a lista na tela
+    // 2. Tenta chamar a IA com tratamento de erro
+    try {
+      const res = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: content }),
+      });
+
+      if (!res.ok) {
+        throw new Error('Falha ao conectar com a IA');
+      }
+
+      const data = await res.json();
+      setAiReply(data.reply);
+      setContent(''); // Limpa o campo de texto após sucesso
+      fetchEntries(); // Recarrega a lista
+    } catch (err) {
+      console.error(err);
+      alert("Ops! Ocorreu um erro ao consultar a IA. Verifique sua chave API no .env.local");
+    }
   };
 
   const handleDelete = async (id: string) => {
